@@ -1,5 +1,5 @@
-# Swiftfox
-Code to import FAECES* vcf files into R, run PCA to confirm species identity and estimate pairwise kinship 
+# VCF to PCA and IBS
+Code to import FAECES* vcf files into R, run PCA to confirm species identity and estimate pairwise identity-by-state and kinship 
 
 Required packages to install:
 
