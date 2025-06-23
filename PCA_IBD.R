@@ -11,7 +11,7 @@ library(vcfR)
 library(reshape2)
 
 #read VCF file in and convert to GDS format for SNPRelate 
-vcf.fn <- ("swift_merged_may29_2024_pilot_2023data_noIndels_bedDP4_Rm50_RmCoys_RmFoxes_Rm349_miss75_mac2_thin100K.recode.vcf")
+vcf.fn <- ("swift_bed_DP4_Rm50_RmCoys_RmFoxes_Rm349_miss75_mac2_thin100K.recode.vcf")
 snpgdsVCF2GDS(vcf.fn, "Swift2023v7.gds", method="biallelic.only")
 
 #Confirm correct specs in GDS file 
