@@ -8,6 +8,7 @@ BiocManager::install("SNPRelate")
 library(gdsfmt)
 library('SNPRelate')
 library(vcfR)
+library(reshape2)
 
 #read VCF file in and convert to GDS format for SNPRelate 
 vcf.fn <- ("swift_merged_may29_2024_pilot_2023data_noIndels_bedDP4_Rm50_RmCoys_RmFoxes_Rm349_miss75_mac2_thin100K.recode.vcf")
@@ -38,7 +39,7 @@ Swift2023v7_pca_table <- data.frame(sample.id=Swift2023v7_pca$sample.id,
 
 plot(Swift2023v7_pca_table$EV2, Swift2023v7_pca_table$EV1, xlab = "Eigenvector 2", ylab="Eigenvector 1",main="PCA")
 
-#Pairwise relatedness calculation, using MLE
+#Pairwise relatedness calculation (identity-by-descent, IBD), using MLE
 sample.id <- read.gdsn(index.gdsn(Swift2023v7.gds, "sample.id"))
 snp.id <- read.gdsn(index.gdsn(Swift2023v7.gds, "snp.id"))
 
@@ -58,3 +59,14 @@ SwiftBoot <- bootstrap.kinship(Swift2023v7.gds,ibdmethod = "MLE", mlemethod = "E
 
 Matrix <- write.kinship.matrix(SwiftBoot, cifile="SwiftBootCIv7.csv")
 Mean <- write.kinship.matrix(SwiftBoot, meanfile = "SwiftBootMeanv7.csv")
+
+#Estimate pairwise identity-by-state (IBS) to identify recaptures 
+
+ibsSwift7 <- snpgdsIBS(Swift2023v7.gds, sample.id=sample.id, snp.id=snp.id, num.thread=2, autosome.only=FALSE)
+
+#Reshape output 
+ibsSwift7_TABLE <- subset(melt[(ibsSwift7$ibs), value!=0])
+
+#Write to table
+write.table(ibsSwift7_TABLE, file="IBS_Swift7.csv")
+
