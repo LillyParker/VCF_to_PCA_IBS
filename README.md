@@ -6,5 +6,6 @@ Required packages to install:
 1. gdsfmt
 2. SNPRelate
 3. vcfR
-4. kinshipUtils 
+4. kinshipUtils
+5. reshape2
 
